@@ -21,7 +21,7 @@
  *  Date: 2017-03-18
  */
 metadata {
-  definition (name: "IKEA-Tradfri", namespace: "edvaldeysteinsson", author: "Edvald Eysteinsson") {
+  definition (name: "IKEA-Tradfri", namespace: "edvaldeysteinsson", author: "Edvald Eysteinsson", mnmn: "SmartThings", vid: "generic-dimmer") {
     capability "Actuator"
     capability "Color Temperature"
     capability "Configuration"
@@ -38,7 +38,7 @@ metadata {
     command "setColorEveryday"
     command "setColorFocus"
     command "nextColor"
-	
+
     // Trådfri bulbs
     fingerprint profileId: "0104", inClusters: "0000, 0003, 0004, 0005, 0006, 0008, 0300, 0B05, 1000", outClusters: "0005, 0019, 0020, 1000", manufacturer: "IKEA of Sweden",  model: "TRADFRI bulb E27 WS�opal 980lm", deviceJoinName: "TRÅDFRI bulb E27 WS opal 980lm"
     fingerprint profileId: "0104", inClusters: "0000, 0003, 0004, 0005, 0006, 0008, 0300, 0B05, 1000", outClusters: "0005, 0019, 0020, 1000", manufacturer: "IKEA of Sweden",  model: "TRADFRI bulb E27 WS opal 980lm", deviceJoinName: "TRÅDFRI bulb E27 WS opal 980lm"
@@ -49,7 +49,7 @@ metadata {
     fingerprint profileId: "0104", inClusters: "0000, 0003, 0004, 0005, 0006, 0008, 0300, 0B05, 1000", outClusters: "0005, 0019, 0020, 1000", manufacturer: "IKEA of Sweden",  model: "TRADFRI bulb E14 WS opal 400lm", deviceJoinName: "TRÅDFRI bulb E14 WS opal 400lm"
     fingerprint profileId: "0104", inClusters: "0000, 0003, 0004, 0005, 0006, 0008, 0300, 0B05, 1000", outClusters: "0005, 0019, 0020, 1000", manufacturer: "IKEA of Sweden",  model: "TRADFRI bulb E12 WS opal 400lm", deviceJoinName: "TRÅDFRI bulb E12 WS opal 400lm"
     fingerprint profileId: "0104", inClusters: "0000, 0003, 0004, 0005, 0006, 0008, 0300, 0B05, 1000", outClusters: "0005, 0019, 0020, 1000", manufacturer: "IKEA of Sweden",  model: "TRADFRI bulb GU10 WS 400lm", deviceJoinName: "TRÅDFRI bulb GU10 WS 400lm"
-    
+
     // FLOALT panels
     fingerprint profileId: "0104", inClusters: "0000, 0003, 0004, 0005, 0006, 0008, 0300, 0B05, 1000", outClusters: "0005, 0019, 0020, 1000", manufacturer: "IKEA of Sweden",  model: "FLOALT panel WS 30x30", deviceJoinName: "FLOALT panel WS 30x30"
     fingerprint profileId: "0104", inClusters: "0000, 0003, 0004, 0005, 0006, 0008, 0300, 0B05, 1000", outClusters: "0005, 0019, 0020, 1000", manufacturer: "IKEA of Sweden",  model: "FLOALT panel WS 30x90", deviceJoinName: "FLOALT panel WS 30x90"
@@ -73,7 +73,7 @@ metadata {
         attributeState "turningOn", label:'${name}', action:"switch.off", icon:"st.switches.light.on", backgroundColor:"#00a0dc", nextState:"turningOff"
         attributeState "turningOff", label:'${name}', action:"switch.on", icon:"st.switches.light.off", backgroundColor:"#ffffff", nextState:"turningOn"
       }
-      
+
       tileAttribute ("device.level", key: "SLIDER_CONTROL") {
         attributeState "level", action:"setLevel"
         }
@@ -90,7 +90,7 @@ metadata {
     standardTile("refresh", "device.refresh", inactiveLabel: false, decoration: "flat", width: 2, height: 1) {
       state "default", label:"", action:"refresh.refresh", icon:"st.secondary.refresh"
     }
-    
+
     standardTile("nextColor", "device.default", inactiveLabel: false, decoration: "flat", width: 2, height: 1) {
       state "default", label:"", action:"nextColor", icon:"https://github.com/edvaldeysteinsson/SmartThingsResources/raw/master/images/next_color.png"
     }
@@ -173,7 +173,7 @@ def setLevel(value) {
       def colorTempMax = colorTempMax ?: 3200;
       def stepSize = (colorTempMax - colorTempMin) / 99;
       int colorTemperature = Math.ceil((colorTempMin - stepSize) + (stepSize*value));
-      
+
       // this will set the color temperature based on the level, default color temperatures are
       // 2200(1%) to 3200(100%) but they can be set in preferences.
       // This is a bit more like how a traditional bulb behaves, it will turn warmer at lower levels.
@@ -208,14 +208,14 @@ def setColorTemperature(value) {
   } else if(value < 2200){
     value = 2200;
   }
-    
+
   setColorName(value)
   zigbee.setColorTemperature(value)
 }
 
 def setColorName(value){
   state.colourTemperature = value
-  
+
   if(colorNameAsKelvin ?: false){
     sendEvent(name: "colorName", value: "${value} K" )
   } else {
